@@ -10,7 +10,8 @@ export GIT_TEST_DEFAULT_INITIAL_BRANCH_NAME
 pwd=$(pwd)
 
 test_expect_success 'setup' '
-	git checkout -b main &&
+	git config --global protocol.file.allow always &&
+	git checkout -b master &&
 	test_commit commit1 &&
 	mkdir sub &&
 	(
