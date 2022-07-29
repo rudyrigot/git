@@ -268,7 +268,8 @@ test_expect_success 'signed-tags=warn-strip' '
 
 test_expect_success 'setup submodule' '
 
-	git checkout -f main &&
+	test_config_global protocol.file.allow always &&
+	git checkout -f master &&
 	mkdir sub &&
 	(
 		cd sub &&
@@ -293,8 +294,9 @@ test_expect_success 'setup submodule' '
 
 test_expect_success 'submodule fast-export | fast-import' '
 
-	SUBENT1=$(git ls-tree main^ sub) &&
-	SUBENT2=$(git ls-tree main sub) &&
+	test_config_global protocol.file.allow always &&
+	SUBENT1=$(git ls-tree master^ sub) &&
+	SUBENT2=$(git ls-tree master sub) &&
 	rm -rf new &&
 	mkdir new &&
 	git --git-dir=new/.git init &&
