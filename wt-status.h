@@ -112,6 +112,7 @@ struct wt_status {
 	int use_color;
 	int no_gettext;
 	int display_comment_prefix;
+	int enumerate_untracked_delay_ms;
 	int relative_paths;
 	int submodule_summary;
 	enum show_ignored_type show_ignored_mode;

@@ -60,6 +60,13 @@ If this variable is not specified, it defaults to 'normal'.
 This variable can be overridden with the -u|--untracked-files option
 of linkgit:git-status[1] and linkgit:git-commit[1].
 
+status.enumerateUntrackedDelayMS::
+	If the enumeration of untracked files takes longer than a certain
+	amount of time, an advice message will display to guide the user
+	towards the help section that can help them tune their
+	linkgit:git-status[1] performance. That amount of time is 2000ms
+	by default, but this config allows to set it to a different delay.
+
 status.submoduleSummary::
 	Defaults to false.
 	If this is set to a non zero number or true (identical to -1 or an

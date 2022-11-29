@@ -1457,6 +1457,10 @@ static int git_status_config(const char *k, const char *v, void *cb)
 			return error(_("Invalid untracked files mode '%s'"), v);
 		return 0;
 	}
+	if (!strcmp(k, "status.enumerateuntrackeddelayms")) {
+		s->enumerate_untracked_delay_ms = git_config_int(k, v);
+		return 0;
+	}
 	if (!strcmp(k, "diff.renamelimit")) {
 		if (s->rename_limit == -1)
 			s->rename_limit = git_config_int(k, v);

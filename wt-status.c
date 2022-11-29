@@ -21,7 +21,6 @@
 #include "fsmonitor-settings.h"
 
 #define AB_DELAY_WARNING_IN_MS (2 * 1000)
-#define UF_DELAY_WARNING_IN_MS (2 * 1000)
 
 static const char cut_line[] =
 "------------------------ >8 ------------------------\n";
@@ -144,6 +143,7 @@ void wt_status_prepare(struct repository *r, struct wt_status *s)
 	s->show_stash = 0;
 	s->ahead_behind_flags = AHEAD_BEHIND_UNSPECIFIED;
 	s->display_comment_prefix = 0;
+	s->enumerate_untracked_delay_ms = 2000;
 	s->detect_rename = -1;
 	s->rename_score = -1;
 	s->rename_limit = -1;
@@ -1207,11 +1207,9 @@ static void wt_longstatus_print_tracking(struct wt_status *s)
 	strbuf_release(&sb);
 }
 
-static int uf_was_slow(uint32_t untracked_in_ms)
+static int uf_was_slow(struct wt_status *s)
 {
-	if (getenv("GIT_TEST_UF_DELAY_WARNING"))
-		untracked_in_ms += UF_DELAY_WARNING_IN_MS + 1;
-	return UF_DELAY_WARNING_IN_MS < untracked_in_ms;
+	return s->enumerate_untracked_delay_ms <= s->untracked_in_ms;
 }
 
 static void show_merge_in_progress(struct wt_status *s,
@@ -1880,7 +1878,7 @@ static void wt_longstatus_print(struct wt_status *s)
 		wt_longstatus_print_other(s, &s->untracked, _("Untracked files"), "add");
 		if (s->show_ignored_mode)
 			wt_longstatus_print_other(s, &s->ignored, _("Ignored files"), "add -f");
-		if (advice_enabled(ADVICE_STATUS_U_OPTION) && uf_was_slow(s->untracked_in_ms)) {
+		if (advice_enabled(ADVICE_STATUS_U_OPTION) && uf_was_slow(s)) {
 			status_printf_ln(s, GIT_COLOR_NORMAL, "%s", "");
 			if (fsm_mode > FSMONITOR_MODE_DISABLED) {
 				status_printf_ln(s, GIT_COLOR_NORMAL,

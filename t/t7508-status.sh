@@ -1696,7 +1696,8 @@ test_expect_success 'slow status advice when core.untrackedCache and fsmonitor a
 		cd slowstatus &&
 		git config core.untrackedCache false &&
 		git config core.fsmonitor false &&
-		GIT_TEST_UF_DELAY_WARNING=1 git status >out &&
+		git config core.enumerateuntrackeddelayms -1 &&
+		git status >out &&
 		sed "s/ [0-9][0-9]*\.[0-9][0-9]/ X/" out >actual &&
 		cat >expected <<-\EOF &&
 		On branch main
@@ -1715,7 +1716,8 @@ test_expect_success 'slow status advice when core.untrackedCache true, but not f
 		cd slowstatus &&
 		git config core.untrackedCache true &&
 		git config core.fsmonitor false &&
-		GIT_TEST_UF_DELAY_WARNING=1 git status >out &&
+		git config core.enumerateuntrackeddelayms -1 &&
+		git status >out &&
 		sed "s/ [0-9][0-9]*\.[0-9][0-9]/ X/" out >actual &&
 		cat >expected <<-\EOF &&
 		On branch main
@@ -1734,7 +1736,8 @@ test_expect_success 'slow status advice when core.untrackedCache true, and fsmon
 		cd slowstatus &&
 		git config core.untrackedCache true &&
 		git config core.fsmonitor true &&
-		GIT_TEST_UF_DELAY_WARNING=1 git status >out &&
+		git config core.enumerateuntrackeddelayms -1 &&
+		git status >out &&
 		sed "s/ [0-9][0-9]*\.[0-9][0-9]/ X/" out >actual &&
 		cat >expected <<-\EOF &&
 		On branch main
